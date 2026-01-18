@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.5" />
+    <title>NAT2 Classifier</title>
+    <script type="module" src="/main.js" defer></script>
+  </head>
+
+  <body>
+    <div class="app-container">
+
+
+      <main class="app-main">
+        <!-- File Upload Page -->
+        <div id="file-page" class="page active">
+          <div id="file-region" class="file-section">
+            <h2>Upload File</h2>
+            <div id="drop-zone" class="drop-zone">
+              <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              <p class="drop-text">Drag and drop your file here</p>
+              <p class="drop-hint">or click to browse</p>
+              <span id="file-list" class="file-info"></span>
+            </div>
+            <button id="open-file-btn" class="btn btn-primary" type="button">Browse Files</button>
+            <button id="analyze-btn" class="btn btn-secondary hidden" type="button">Analyze File</button>
+            <p id="file-status" class="status-message"></p>
+          </div>
+        </div>
+
+        <!-- Analysis Page -->
+        <div id="analysis-page" class="page">
+          <div class="analysis-section">
+            <h2>Analyzing File</h2>
+            <div id="loading-container" class="loading-container">
+              <div class="spinner"></div>
+              <p id="loading-text">Processing your file...</p>
+            </div>
+            <div id="result-container" class="result-container hidden">
+              <h3>Analysis Complete</h3>
+              <div class="result-card">
+                <h4>NAT2 Classification Result</h4>
+                <div class="result-content">
+                  <div class="result-item">
+                    <span id="classification-result" class="result-value"></span>
+                  </div>
+                </div>
+              </div>
+              <button id="back-btn" class="btn btn-secondary" type="button">Analyze Another File</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

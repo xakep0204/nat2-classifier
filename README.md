@@ -1,7 +1,15 @@
-# Tauri + Vanilla
+# nat2-classifier
 
-This template should help get you started developing with Tauri in vanilla HTML, CSS and Javascript.
+Multiplatform rust tauri app for classifying nat2 genes from VCF and CSV files. The main algorithm takes a patient's genotype (DNA info) as input and outputs whether
+they are Fast, Intermediate, or Slow acetylators.
 
-## Recommended IDE Setup
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+## To-Do
+
+- [x] Basic GUI with file upload
+- [x] Implement classification algorithm
+- [x] Display results in GUI
+- [ ] Add support for more file formats
+- [ ] Improve UI/UX design
+- [ ] Package for distribution on Windows, macOS, and Linux
+- [ ] Write tests and documentation

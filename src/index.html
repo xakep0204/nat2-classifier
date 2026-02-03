@@ -44,7 +44,9 @@
             </div>
             <div id="result-container" class="result-container hidden">
               <h3>Analysis Complete</h3>
-              <div class="result-card">
+              
+              <!-- Single result for FASTA files -->
+              <div id="single-result" class="result-card">
                 <h4>NAT2 Classification Result</h4>
                 <div class="result-content">
                   <div class="result-item">
@@ -52,6 +54,28 @@
                   </div>
                 </div>
               </div>
+              
+              <!-- Table result for CSV files -->
+              <div id="csv-result" class="result-card hidden">
+                <h4>CSV Analysis Results</h4>
+                <div class="csv-controls">
+                  <button id="download-csv-btn" class="btn btn-primary" type="button">Download CSV Results</button>
+                </div>
+                <div class="table-container">
+                  <table id="results-table">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Sequence (first 100 chars)</th>
+                        <th>Classification</th>
+                      </tr>
+                    </thead>
+                    <tbody id="results-tbody">
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              
               <button id="back-btn" class="btn btn-secondary" type="button">Analyze Another File</button>
             </div>
           </div>

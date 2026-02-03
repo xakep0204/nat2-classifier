@@ -356,3 +356,73 @@ body {
     font-size: 0.95rem;
   }
 }
+
+/* CSV Results Table */
+.csv-controls {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.table-container {
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid rgba(36, 200, 219, 0.2);
+  background: rgba(10, 14, 39, 0.8);
+  position: relative;
+}
+
+#results-table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+  background: rgba(10, 14, 39, 0.8);
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+#results-table th {
+  background: linear-gradient(135deg, #24c8db 0%, #0891b2 100%);
+  color: #ffffff;
+  padding: 1rem 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid rgba(36, 200, 219, 0.8);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#results-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid rgba(36, 200, 219, 0.1);
+  word-break: break-word;
+  max-width: 200px;
+}
+
+#results-table td:nth-child(1) {
+  min-width: 100px;
+  max-width: 150px;
+}
+
+#results-table td:nth-child(2) {
+  min-width: 300px;
+  max-width: 400px;
+}
+
+#results-table td:nth-child(3) {
+  min-width: 200px;
+  white-space: nowrap;
+}
+
+#results-table tr:hover {
+  background: rgba(36, 200, 219, 0.05);
+}
+
+#results-table tbody tr:last-child td {
+  border-bottom: none;
+}

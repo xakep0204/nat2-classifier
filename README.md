@@ -9,7 +9,7 @@ they are Fast, Intermediate, or Slow acetylators.
 - [x] Basic GUI with file upload
 - [x] Implement classification algorithm
 - [x] Display results in GUI
-- [ ] Add support for more file formats
+- [x] Add support for more file formats
 - [ ] Improve UI/UX design
 - [ ] Package for distribution on Windows, macOS, and Linux
-- [ ] Write tests and documentation
+- [x] Write tests and documentation

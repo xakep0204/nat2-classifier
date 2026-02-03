@@ -16,13 +16,14 @@ async function waitForTauri() {
   });
 }
 
-let invoke, open;
+let invoke, open, save;
 
 async function initTauri() {
   await waitForTauri();
   invoke = window.__TAURI__.core.invoke;
   open = window.__TAURI__.dialog.open;
-  console.log("Tauri APIs initialized:", { invoke, open });
+  save = window.__TAURI__.dialog.save;
+  console.log("Tauri APIs initialized:", { invoke, open, save });
 }
 
 async function openFile() {
@@ -152,19 +153,109 @@ async function startAnalysis() {
   }
 }
 
+let csvResultsData = null; // Store CSV results for download
+
 function showResults(result) {
   // Hide loading, show results
   document.getElementById('loading-container').classList.add('hidden');
   document.getElementById('result-container').classList.remove('hidden');
 
-  // Display the classification result
+  // Check if result is JSON (CSV) or plain text (FASTA)
+  try {
+    const parsedResult = JSON.parse(result);
+    if (Array.isArray(parsedResult)) {
+      // CSV results
+      showCsvResults(parsedResult);
+      csvResultsData = result; // Store for download
+    } else {
+      // Single result (shouldn't happen with new format, but fallback)
+      showSingleResult(result);
+    }
+  } catch (e) {
+    // Plain text result (FASTA)
+    showSingleResult(result);
+  }
+}
+
+function showSingleResult(result) {
+  document.getElementById('single-result').classList.remove('hidden');
+  document.getElementById('csv-result').classList.add('hidden');
   document.getElementById('classification-result').textContent = result;
+}
+
+function showCsvResults(results) {
+  document.getElementById('single-result').classList.add('hidden');
+  document.getElementById('csv-result').classList.remove('hidden');
+  
+  const tbody = document.getElementById('results-tbody');
+  tbody.innerHTML = '';
+  
+  results.forEach(result => {
+    const row = document.createElement('tr');
+    
+    const idCell = document.createElement('td');
+    idCell.textContent = result.id;
+    
+    const sequenceCell = document.createElement('td');
+    sequenceCell.textContent = result.sequence.length > 100 
+      ? result.sequence.substring(0, 100) + '...' 
+      : result.sequence;
+    sequenceCell.title = result.sequence; // Full sequence on hover
+    
+    const classificationCell = document.createElement('td');
+    classificationCell.textContent = result.classification;
+    
+    row.appendChild(idCell);
+    row.appendChild(sequenceCell);
+    row.appendChild(classificationCell);
+    
+    tbody.appendChild(row);
+  });
+}
+
+async function downloadCsvResults() {
+  if (!csvResultsData) {
+    updateFileStatus("No CSV data available for download", 'error');
+    return;
+  }
+  
+  try {
+    const csvContent = await invoke("download_csv_results", { resultsJson: csvResultsData });
+    
+    // Use Tauri's save dialog to let user choose location
+    if (!save) {
+      console.error("Save function not available");
+      updateFileStatus("Save dialog not available", 'error');
+      return;
+    }
+    
+    const savePath = await save({
+      title: 'Save CSV Results',
+      filters: [
+        {
+          name: 'CSV Files',
+          extensions: ['csv']
+        }
+      ],
+      defaultPath: 'nat2_analysis_results.csv'
+    });
+    
+    if (savePath) {
+      // Write the file using Tauri's fs API
+      await invoke("write_file", { path: savePath, content: csvContent });
+      updateFileStatus("CSV results saved successfully", 'success');
+    }
+  } catch (error) {
+    console.error("Download error:", error);
+    updateFileStatus(`Save failed: ${error}`, 'error');
+  }
 }
 
 function goBack() {
   // Reset file selection
   selectedFilePath = null;
   selectedFileName = null;
+  csvResultsData = null; // Reset CSV data
   document.querySelector("#analyze-btn").classList.add("hidden");
   document.querySelector("#file-list").textContent = "";
   updateFileStatus("", 'info');
@@ -203,6 +294,12 @@ window.addEventListener("DOMContentLoaded", async () => {
   const backBtn = document.querySelector("#back-btn");
   if (backBtn) {
     backBtn.addEventListener("click", goBack);
+  }
+
+  // Download CSV button
+  const downloadCsvBtn = document.querySelector("#download-csv-btn");
+  if (downloadCsvBtn) {
+    downloadCsvBtn.addEventListener("click", downloadCsvResults);
   }
 
   // Drag and drop setup

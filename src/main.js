@@ -36,7 +36,13 @@ async function openFile() {
 
     const filePath = await open({
       multiple: false,
-      directory: false
+      directory: false,
+      filters: [
+        {
+          name: 'Supported Files',
+          extensions: ['fasta', 'csv']
+        }
+      ]
     });
 
     console.log("File path selected:", filePath);
@@ -58,6 +64,16 @@ let selectedFileName = null;
 async function handleFileSelected(filePath, fileName) {
   try {
     console.log("Reading file:", filePath);
+    
+    // Check file extension
+    const allowedExtensions = ['.fasta', '.csv'];
+    const fileExtension = fileName.toLowerCase().substring(fileName.lastIndexOf('.'));
+    
+    if (!allowedExtensions.includes(fileExtension)) {
+      updateFileStatus(`✗ Invalid file type. Only .fasta and .csv files are allowed.`, 'error');
+      return;
+    }
+    
     if (!invoke) {
       console.error("Invoke function not available");
       updateFileStatus("Invoke not available", 'error');
@@ -213,6 +229,16 @@ window.addEventListener("DOMContentLoaded", async () => {
       const files = e.dataTransfer.files;
       if (files.length > 0) {
         const file = files[0];
+        
+        // Check file extension for drag-and-drop
+        const allowedExtensions = ['.fasta', '.csv'];
+        const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
+        
+        if (!allowedExtensions.includes(fileExtension)) {
+          updateFileStatus(`✗ Invalid file type. Only .fasta and .csv files are allowed.`, 'error');
+          return;
+        }
+        
         const filePath = file.path || file.name;
         console.log("File dropped:", file.name);
         await handleFileSelected(filePath, file.name);

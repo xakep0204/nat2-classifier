@@ -27,6 +27,14 @@ fn analyze_nat2(path: &str) -> Result<String, String> {
 
     let sequence: String = words[1..].iter().map(|s| s.to_string()).collect::<Vec<String>>().join("");
 
+    let sequence: String = if let Some(pos) = sequence.find("mRNA") {
+        sequence[pos + 4..].to_string()
+    } else {
+        sequence
+    };
+
+    println!("Debug - sequence: {}", sequence);
+
     if sequence.len() < 857 {
         return Err(format!("Sequence too short: {} characters, need at least 857", sequence.len()));
     }

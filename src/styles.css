@@ -135,6 +135,12 @@ body {
   margin-bottom: 1rem;
 }
 
+.drop-hint.small {
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+  color: #808080;
+}
+
 .file-info {
   display: block;
   margin-top: 1rem;
